@@ -1,0 +1,14 @@
+version: "3"
+services:
+  autoware:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    user: "${USER_ID}:${GROUP_ID}"
+    command: ["bash", "-c", "source /home/autoware/autoware/install/setup.bash && python3 -m streamlit run ./ws/src/app.py --server.port 8080 --server.runOnSave true"]
+    tty: true
+    working_dir: "/home/autoware/"
+    volumes:
+      - ./src:/home/autoware/ws/src
+    ports:
+      - "8080:8080"
