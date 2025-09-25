@@ -84,12 +84,14 @@ def create_plotly_figure(file_path: str, selected_lane_id: str | None, chart_siz
     
     for polygon in lanelet_polygon_list.root:
         if (selected_lane_id and
-            (str(selected_lane_id) == str(polygon.lane_id) or
-             str(selected_lane_id) == str(polygon.left_bound_id) or
-             str(selected_lane_id) == str(polygon.right_bound_id))):
+            (str(selected_lane_id) == str(polygon.lane_id))):
             line_color = "red"
+            width = 3
+            fillcolor = "rgba(255, 0, 0, 0.5)"
         else:
             line_color = "blue"
+            fillcolor = "rgba(135, 206, 235, 0.5)"
+            width = 1
 
         fig.add_trace(
             go.Scattergl(
@@ -97,8 +99,8 @@ def create_plotly_figure(file_path: str, selected_lane_id: str | None, chart_siz
                 y=polygon.y,
                 name=f'id: {polygon.lane_id}',
                 fill="toself",
-                fillcolor="rgba(135, 206, 235, 0.5)",
-                line=dict(color=line_color, width=1),
+                fillcolor=fillcolor,
+                line=dict(color=line_color, width=width),
                 showlegend=False,
                 mode='lines'
             )

@@ -6,9 +6,10 @@ T = typing.TypeVar('T')
 class LaneletPolygon2d(BaseModel):
     x: typing.List[float]
     y: typing.List[float]
-    left_bound_id: int
-    right_bound_id: int
+    # left_bound_id: int
+    # right_bound_id: int
     lane_id: int
+    type: str
 
 
 class LaneletPolygon3d(LaneletPolygon2d):

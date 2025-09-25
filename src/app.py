@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 import shutil
+import re
 import pandas as pd
 import subprocess
 from run_script import run_validator
@@ -11,8 +12,7 @@ from services import load_and_merge_data, create_plotly_figure
 base = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_DIR = os.path.join(base, "uploaded_files")
 SCRIPT_OUTPUT_BASE_DIR = os.path.join(base, "script_temp_output")
-CHART_SIZE = 1200
-
+CHART_SIZE = 1800
 
 if not os.path.exists(UPLOAD_DIR):
     os.makedirs(UPLOAD_DIR)
@@ -84,14 +84,17 @@ def run_app_logic():
                 column_config=column_config
             )
             
+            st.session_state.selected_lane_id = None
             if selected["selection"]["rows"]:
                 selected_index = selected["selection"]["rows"][0]
                 selected_row = st.session_state.df.iloc[selected_index]
-                st.session_state.selected_lane_id = selected_row['lane_id']
-            else:
-                st.session_state.selected_lane_id = None
-                
+                result = re.search((r' +(\d+) +'), str(selected_row['message']))
+                st.session_state.selected_lane_id = result.group(1) if result else None
+                if st.session_state.selected_lane_id is None and selected_row['lane_id'] is not None:
+                    st.session_state.selected_lane_id = str(selected_row['lane_id'])
             # === ロジック層を呼び出してPlotlyグラフを生成 ===
+            id_str = st.session_state.selected_lane_id if st.session_state.selected_lane_id else "なし"
+            st.write( f"選択された lane_id: {id_str}" )
             st.subheader("Lanelet2 Map")
             fig = create_plotly_figure(
                 file_path_on_server, st.session_state.selected_lane_id, CHART_SIZE
