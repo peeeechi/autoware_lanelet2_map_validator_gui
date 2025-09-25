@@ -12,7 +12,7 @@ from services import load_and_merge_data, create_plotly_figure
 base = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_DIR = os.path.join(base, "uploaded_files")
 SCRIPT_OUTPUT_BASE_DIR = os.path.join(base, "script_temp_output")
-CHART_SIZE = 1800
+CHART_SIZE = 1200
 
 if not os.path.exists(UPLOAD_DIR):
     os.makedirs(UPLOAD_DIR)
