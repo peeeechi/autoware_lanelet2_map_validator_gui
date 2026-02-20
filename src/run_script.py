@@ -12,11 +12,11 @@ def run_validator(map_path: str, output_path: str) -> ValidationResults:
   output_json_path = os.path.join(output_path, 'lanelet2_validation_results.json')
   # シェルスクリプトを直接実行
   try:
-      command = f"source /home/autoware/autoware/install/setup.bash \
-        && ros2 run autoware_lanelet2_map_validator autoware_lanelet2_map_validator \
+      command = f"/home/autoware/autoware/release_package/autoware_lanelet2_map_validator \
         -p mgrs \
-        -i /home/autoware/autoware/src/autoware_lanelet2_map_validator/autoware_lanelet2_map_validator/map_requirements/pilot-auto/cargo_transport-v2025_6_0.json \
+        -l ja \
         -m {map_path} \
+        -i /home/autoware/autoware/release_package/map_requirements/pilot-auto/cargo_transport-v2025_6_0.json \
         -o {output_path}"
       print("Executing command:", command)
       _ = subprocess.run(command, capture_output=True, text=True, check=True, shell=True, executable="/bin/bash")
